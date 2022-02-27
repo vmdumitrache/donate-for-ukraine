@@ -1,52 +1,37 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <router-view/>
+  <v-app id="inspire">
+    <app-navigation></app-navigation>
+    <v-main class="grey darken-4">
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-sheet class="mb-5 px-5 py-2">
+              <h1 class="text-center text-uppercase" >{{ $route.name }}</h1>
+            </v-sheet>
+            <v-sheet min-height="70vh">
+              <v-container fluid class="pa-5">
+                <router-view />
+              </v-container>
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
+    <main-footer></main-footer>
   </v-app>
 </template>
 
 <script>
+import AppNavigation from './components/ConstrainedAppNavigation'
+import MainFooter from './components/MainFooter.vue'
+// import AppNavigation from './components/AppNavigation.vue'
 
 export default {
   name: 'App',
+  components: {
+    AppNavigation,
+    MainFooter
+  },
 
   data: () => ({
     //
