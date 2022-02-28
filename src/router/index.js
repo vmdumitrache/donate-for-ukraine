@@ -35,6 +35,22 @@ const routes = [
     component: () => import('../views/NotFound.vue')
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue'),
+    meta: {
+      disableIfLoggedIn: true
+    }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue'),
+    meta: {
+      disableIfLoggedIn: true
+    }
+  },
+  {
     path: '*',
     redirect: '/404'
   }

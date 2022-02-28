@@ -18,6 +18,14 @@
         >
           {{ item.title }}
         </v-btn>
+        <v-btn
+          text
+          class="hidden-sm-and-down"
+          v-if="user.loggedIn"
+          @click.prevent="signOut"
+        >
+          Sign Out
+        </v-btn>
       </v-container>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" fixed temporary>
@@ -38,12 +46,23 @@
             </v-list-item-content>
           </v-list-item>
         </template>
+        <v-list-item>
+          <v-list-item-content
+              class="text-uppercase"
+              v-if="user.loggedIn"
+              @click.prevent="signOut"
+              >Sign Out</v-list-item-content
+            >
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </span>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import firebase from '@/services/firebase'
+
 export default {
   name: 'AppNavigation',
   data () {
@@ -57,6 +76,23 @@ export default {
         { title: 'Contact Us', url: '/contact' }
       ],
       links: ['Dashboard', 'Messages', 'Profile', 'Updates']
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user'
+    })
+  },
+  methods: {
+    signOut () {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace({
+            path: '/'
+          })
+        })
     }
   }
 }
