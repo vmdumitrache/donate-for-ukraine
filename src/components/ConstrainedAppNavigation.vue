@@ -33,8 +33,8 @@
       <v-list>
         <template v-for="(item, index) in items">
           <v-list-item :key="index" :to="item.url">
-            <v-list-item-content>
-              {{ item.title.toUpperCase() }}
+            <v-list-item-content class="text-uppercase">
+              {{ item.title }}
             </v-list-item-content>
           </v-list-item>
         </template>

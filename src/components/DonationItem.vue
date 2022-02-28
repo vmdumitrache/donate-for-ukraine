@@ -2,16 +2,15 @@
   <v-col class="ma-0 pa-0">
     <v-card outlined class="mx-auto my-4">
       <v-card-title style="word-break: normal" class="text-uppercase">
-        {{ donationItem.org }}
+        {{ organisation.name }}
         <v-spacer></v-spacer>
       </v-card-title>
 
       <v-card-subtitle class="text-overline">
-        {{ donationItem.category }}
+        {{ organisation.category }}
       </v-card-subtitle>
-      <!-- <v-divider></v-divider> -->
       <v-card-text class="text-justify text body-1">
-        {{ donationItem.description }}
+        {{ organisation.description }}
         <v-row>
           <v-col
             xs="12"
@@ -29,7 +28,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <font-awesome-icon
-                    v-if="donationItem.paymentMethods.payPal"
+                    v-if="organisation.paymentMethods.payPal"
                     class="mr-1"
                     icon="fa-brands fa-cc-paypal"
                     v-bind="attrs"
@@ -42,7 +41,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <font-awesome-icon
-                    v-if="donationItem.paymentMethods.creditCard"
+                    v-if="organisation.paymentMethods.creditCard"
                     class="mx-1"
                     icon="fa-solid fa-credit-card"
                     v-bind="attrs"
@@ -55,7 +54,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <font-awesome-icon
-                    v-if="donationItem.paymentMethods.bankTransfer"
+                    v-if="organisation.paymentMethods.bankTransfer"
                     class="mx-1"
                     icon="fa-solid fa-building-columns"
                     v-bind="attrs"
@@ -68,7 +67,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <font-awesome-icon
-                    v-if="donationItem.paymentMethods.crypto"
+                    v-if="organisation.paymentMethods.crypto"
                     class="ml-1"
                     icon="fa-brands fa-bitcoin"
                     v-bind="attrs"
@@ -89,14 +88,14 @@
             <v-btn
               color="primary"
               outlined
-              :href="donationItem.url"
+              :href="organisation.url"
               target="_blank"
               text
               >Donate</v-btn
             >
           </v-col>
           <v-col class="text-right font-italic">
-            <v-btn color="error" :href="donationItem.url" target="_blank" text
+            <v-btn color="error" :href="organisation.url" target="_blank" text
               >Report</v-btn
             >
           </v-col>
@@ -108,7 +107,7 @@
 
 <script>
 export default {
-  props: ['donationItem'],
+  props: ['organisation'],
   name: 'DonationItem',
   data () {
     return {
