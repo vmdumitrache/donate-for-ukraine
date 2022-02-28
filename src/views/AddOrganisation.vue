@@ -55,7 +55,7 @@
       required
     ></v-checkbox>
 
-    <v-btn :disabled="valid" color="success" class="mr-4" @click="saveOrganisation">
+    <v-btn :disabled="!valid" color="success" class="mr-4" @click="saveOrganisation">
       Add Organisation
     </v-btn>
   </v-form>
