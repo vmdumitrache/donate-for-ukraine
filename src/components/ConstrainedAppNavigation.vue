@@ -7,7 +7,7 @@
           class="hidden-md-and-up"
         ></v-app-bar-nav-icon>
         <v-spacer class="hidden-md-and-up"></v-spacer>
-        <v-toolbar-title class="text-uppercase">{{ appTitle }}</v-toolbar-title>
+        <v-toolbar-title class="text-uppercase" style="cursor: pointer" @click="$router.push('/')" >{{ appTitle }}</v-toolbar-title>
         <v-spacer class="hidden-sm-and-down"></v-spacer>
         <v-btn
           text
@@ -17,6 +17,14 @@
           :to="item.url"
         >
           {{ item.title }}
+        </v-btn>
+        <v-btn
+          text
+          class="hidden-sm-and-down"
+          v-if="user.loggedIn"
+          @click.prevent="signOut"
+        >
+          Sign Out
         </v-btn>
       </v-container>
     </v-app-bar>
@@ -38,12 +46,23 @@
             </v-list-item-content>
           </v-list-item>
         </template>
+        <v-list-item>
+          <v-list-item-content
+              class="text-uppercase"
+              v-if="user.loggedIn"
+              @click.prevent="signOut"
+              >Sign Out</v-list-item-content
+            >
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </span>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import firebase from '@/services/firebase'
+
 export default {
   name: 'AppNavigation',
   data () {
@@ -52,11 +71,27 @@ export default {
       drawer: false,
       items: [
         { title: 'Where to donate', url: '/' },
-        { title: 'About us', url: '/about' },
-        { title: 'Contribute', url: '/contribute' },
+        { title: 'Our Mission', url: '/our-mission' },
+        { title: 'Resources', url: '/resources' },
         { title: 'Contact Us', url: '/contact' }
-      ],
-      links: ['Dashboard', 'Messages', 'Profile', 'Updates']
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user'
+    })
+  },
+  methods: {
+    signOut () {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace({
+            path: '/'
+          })
+        })
     }
   }
 }

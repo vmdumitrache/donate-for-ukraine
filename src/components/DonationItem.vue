@@ -9,8 +9,8 @@
       <v-card-subtitle class="text-overline">
         {{ organisation.category }}
       </v-card-subtitle>
-      <v-card-text class="text-justify text body-1">
-        {{ organisation.description }}
+      <v-card-text class="text body-2">
+        <span v-html="organisation.description"></span>
         <v-row>
           <v-col
             xs="12"
@@ -91,14 +91,14 @@
               :href="organisation.url"
               target="_blank"
               text
-              >Donate</v-btn
+              >Read More</v-btn
             >
           </v-col>
-          <v-col class="text-right font-italic">
+          <!-- <v-col class="text-right font-italic">
             <v-btn color="error" :href="organisation.url" target="_blank" text
               >Report</v-btn
             >
-          </v-col>
+          </v-col> -->
         </v-row>
       </v-card-actions>
     </v-card>
