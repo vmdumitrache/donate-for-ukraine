@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import firebase from '@/services/firebase'
 Vue.use(VueRouter)
 
+const DEFAULT_TITLE = 'Donate For Ukraine'
 const routes = [
   {
     path: '/',
@@ -81,6 +82,12 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.afterEach((to, from) => {
+  Vue.nextTick(() => {
+    document.title = DEFAULT_TITLE + ' - ' + to.name || DEFAULT_TITLE
+  })
 })
 
 router.beforeEach((to, from, next) => {

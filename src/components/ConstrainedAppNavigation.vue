@@ -7,7 +7,7 @@
           class="hidden-md-and-up"
         ></v-app-bar-nav-icon>
         <v-spacer class="hidden-md-and-up"></v-spacer>
-        <v-toolbar-title class="text-uppercase">{{ appTitle }}</v-toolbar-title>
+        <v-toolbar-title class="text-uppercase" style="cursor: pointer" @click="$router.push('/')" >{{ appTitle }}</v-toolbar-title>
         <v-spacer class="hidden-sm-and-down"></v-spacer>
         <v-btn
           text
