@@ -15,7 +15,7 @@
             <div class="paragraph-text mt-2">
               <br />
               <br />Try going back to <a href="/">home</a> page and repeating your action. Or,
-              <a href="/contact">contact us</a> for support.
+              <a href="/contact-us">contact us</a> for support.
             </div>
           </v-card>
         </v-flex>

@@ -38,7 +38,7 @@ export default {
         { title: 'Where to donate', url: '/' },
         { title: 'About us', url: '/about' },
         { title: 'Contribute', url: '/contribute' },
-        { title: 'Contact Us', url: '/contact' }
+        { title: 'Contact Us', url: '/contact-us' }
       ]
     }
   }

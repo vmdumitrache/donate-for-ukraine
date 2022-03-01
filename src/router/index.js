@@ -14,24 +14,16 @@ const routes = [
     }
   },
   {
-    path: '/our-mission',
-    name: 'Our Mission',
-    component: () => import('../views/OurMissionView.vue'),
-    meta: {
-      public: true
-    }
-  },
-  {
-    path: '/resources',
-    name: 'Resources',
+    path: '/external-resources',
+    name: 'External Resources',
     component: () => import('../views/ResourcesView.vue'),
     meta: {
       public: true
     }
   },
   {
-    path: '/contact',
-    name: 'Contact',
+    path: '/contact-us',
+    name: 'Contact Us',
     component: () => import('../views/ContactView.vue'),
     meta: {
       public: true
