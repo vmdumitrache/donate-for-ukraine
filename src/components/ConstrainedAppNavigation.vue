@@ -71,11 +71,10 @@ export default {
       drawer: false,
       items: [
         { title: 'Where to donate', url: '/' },
-        { title: 'About us', url: '/about' },
-        { title: 'Contribute', url: '/contribute' },
+        { title: 'Our Mission', url: '/our-mission' },
+        { title: 'Resources', url: '/resources' },
         { title: 'Contact Us', url: '/contact' }
-      ],
-      links: ['Dashboard', 'Messages', 'Profile', 'Updates']
+      ]
     }
   },
   computed: {

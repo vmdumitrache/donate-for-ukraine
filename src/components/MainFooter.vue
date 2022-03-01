@@ -1,7 +1,7 @@
 <template>
   <v-footer padless dark>
     <v-card flat tile width="100%" class="text-center">
-      <v-card-text>
+      <!-- <v-card-text>
         <v-btn
           v-for="link in links"
           :key="link"
@@ -12,7 +12,7 @@
         >
           {{ link }}
         </v-btn>
-      </v-card-text>
+      </v-card-text> -->
 
       <v-divider></v-divider>
 

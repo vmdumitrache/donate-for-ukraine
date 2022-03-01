@@ -1,20 +1,31 @@
 <template>
   <div>
     <v-progress-linear
-    v-if="isLoading === true"
-    color="grey darken-3"
-    absolute
-    top
-    :indeterminate="true"
-  ></v-progress-linear>
-    <p class="text-justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
+      v-if="isLoading === true"
+      color="grey darken-3"
+      absolute
+      top
+      :indeterminate="true"
+    ></v-progress-linear>
+    <p class="text-center">
+      As the conflict in Ukraine unfolds, more and more people are becoming
+      displaced and are having their lives turned upside down. People fighting
+      in Ukraine, refugees, and the Ukrainian Armed Forces are in need of
+      support, be it in the form of food and hygiene products, medical supplies,
+      or military equipment.
+    </p>
+    <p class="text-center">
+      You can help by making donations, however small, to the charities and
+      organisations that are working towards providing such aide and relief.
+    </p>
+    <p class="text-center">
+      We have provided a non-exhaustive list of legitimate organisations and
+      charities where your help is greatly needed.
+    </p>
+    <p class="text-center">
+      We are actively working on adding more organisations to our list, as well
+      as more resources. If you would like to contribute,
+      <br/><a class="text-decoration-none" href="/contact">get in touch with us</a>.
     </p>
     <v-col
       cols="12"

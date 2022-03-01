@@ -45,6 +45,18 @@ export default {
       ]
     }
   },
+  created () {
+    firebase.auth().onAuthStateChanged(userAuth => {
+      if (userAuth) {
+        firebase
+          .auth()
+          .currentUser.getIdTokenResult(true)
+          .then(tokenResult => {
+            console.log(tokenResult)
+          })
+      }
+    })
+  },
   methods: {
     validate () {
       this.$refs.form.validate()

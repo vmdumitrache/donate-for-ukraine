@@ -1,45 +1,64 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import firebase from '@/services/firebase'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Where to donate',
-    component: () => import('../views/MainView.vue')
+    component: () => import('../views/MainView.vue'),
+    meta: {
+      public: true
+    }
   },
   {
-    path: '/about',
-    name: 'About us',
-    component: () => import('../views/AboutView.vue')
+    path: '/our-mission',
+    name: 'Our Mission',
+    component: () => import('../views/OurMissionView.vue'),
+    meta: {
+      public: true
+    }
   },
   {
-    path: '/contribute',
-    name: 'Contribute',
-    component: () => import('../views/AboutView.vue')
+    path: '/resources',
+    name: 'Resources',
+    component: () => import('../views/ResourcesView.vue'),
+    meta: {
+      public: true
+    }
   },
   {
     path: '/contact',
     name: 'Contact',
-    component: () => import('../views/AboutView.vue')
+    component: () => import('../views/ContactView.vue'),
+    meta: {
+      public: true
+    }
   },
   {
     path: '/organisations/add',
     name: 'Add organisation',
+    meta: {
+      public: false
+    },
     component: () => import('../views/AddOrganisation.vue')
   },
   {
     path: '/404',
     name: '404',
-    component: () => import('../views/NotFound.vue')
+    component: () => import('../views/NotFound.vue'),
+    meta: {
+      public: true
+    }
   },
   {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
     meta: {
-      disableIfLoggedIn: true
+      disableIfLoggedIn: true,
+      public: true
     }
   },
   {
@@ -47,7 +66,8 @@ const routes = [
     name: 'Login',
     component: () => import('../views/Login.vue'),
     meta: {
-      disableIfLoggedIn: true
+      disableIfLoggedIn: true,
+      public: true
     }
   },
   {
@@ -61,6 +81,36 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  firebase.auth().onAuthStateChanged(userAuth => {
+    if (userAuth) {
+      if (to.meta.disableIfLoggedIn) {
+        next({ path: '/' })
+      } else if (!to.meta.public) {
+        firebase.auth().currentUser.getIdTokenResult()
+          .then(function ({
+            claims
+          }) {
+            console.log(claims)
+            if (!claims.admin) {
+              next()
+            } else {
+              next({ path: '/' })
+            }
+          })
+      } else {
+        next()
+      }
+    } else {
+      if (!to.meta.public) {
+        next({ path: '/' })
+      } else {
+        next()
+      }
+    }
+  })
 })
 
 export default router

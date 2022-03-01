@@ -5,6 +5,7 @@
     v-model="valid"
 
   >
+  <v-alert class="text-center" text v-if="error" type="error">{{error}}</v-alert>
     <v-text-field
       v-model="name"
       :rules="stringRules"
@@ -45,6 +46,7 @@ export default {
   name: 'RegisterView',
   data () {
     return {
+      error: '',
       valid: false,
       name: '',
       email: '',
@@ -67,20 +69,27 @@ export default {
     validate () {
       this.$refs.form.validate()
     },
-    submit () {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then((data) => {
-          data.user
-            .updateProfile({
-              displayName: this.name
-            })
-            .then(() => {})
-        })
-        .catch((err) => {
-          this.error = err.message
-        })
+    async submit () {
+      try {
+        await firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then((data) => {
+            data.user
+              .updateProfile({
+                displayName: this.name
+              })
+              .then(() => {})
+          })
+        firebase
+          .auth()
+          .signOut()
+          .then(user => {
+            this.$router.push({ path: '/login' })
+          })
+      } catch (error) {
+        this.error = error.message
+      }
     }
   }
 }
