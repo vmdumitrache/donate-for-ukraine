@@ -1,3 +1,7 @@
 import firebase from './firebase'
+import 'firebase/firestore'
 
-export default firebase.firestore()
+const db = firebase.firestore()
+db.enablePersistence()
+
+export default db

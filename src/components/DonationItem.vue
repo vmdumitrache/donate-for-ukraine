@@ -20,7 +20,7 @@
               py-0
               my-0
               pt-15
-              text-caption text-uppercase text-right
+              text-caption text-uppercase text-left
             "
           >
             Accepted payment methods
@@ -87,7 +87,6 @@
           <v-col>
             <v-btn
               color="primary"
-              outlined
               :href="organisation.url"
               target="_blank"
               text

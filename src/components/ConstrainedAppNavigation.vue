@@ -71,9 +71,8 @@ export default {
       drawer: false,
       items: [
         { title: 'Where to donate', url: '/' },
-        { title: 'Our Mission', url: '/our-mission' },
-        { title: 'Resources', url: '/resources' },
-        { title: 'Contact Us', url: '/contact' }
+        { title: 'External Resources', url: '/external-resources' },
+        { title: 'Contact Us', url: '/contact-us' }
       ]
     }
   },
