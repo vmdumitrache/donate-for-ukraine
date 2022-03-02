@@ -12,8 +12,6 @@ Vue.use(VueCookie)
 
 const cookiesEnabled = VueCookie.get('acceptedCookies') === 'true' ?? true
 
-console.log({ cookiez: cookiesEnabled })
-
 Vue.use(VueGtag, {
   config: { id: 'G-XHHDMJLZSD' },
   enabled: cookiesEnabled,
