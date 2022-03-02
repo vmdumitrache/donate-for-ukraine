@@ -52,6 +52,7 @@ export default {
   }),
   created () {
     db.collection('organisations')
+      .orderBy('category', 'asc')
       .get()
       .then((querySnapshot) => {
         this.isLoading = false
