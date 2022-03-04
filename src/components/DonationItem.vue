@@ -93,11 +93,11 @@
               >Read More</v-btn
             >
           </v-col>
-          <!-- <v-col class="text-right font-italic">
-            <v-btn color="error" :href="organisation.url" target="_blank" text
-              >Report</v-btn
+          <v-col class="text-right font-italic">
+            <v-btn v-if="user.loggedIn" color="error" :to="'/admin/organisations/add/'+organisation.id" text
+              >Edit</v-btn
             >
-          </v-col> -->
+          </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: ['organisation'],
   name: 'DonationItem',
@@ -112,6 +113,11 @@ export default {
     return {
       //
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user'
+    })
   }
 }
 </script>

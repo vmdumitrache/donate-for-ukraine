@@ -30,23 +30,16 @@ const routes = [
     }
   },
   {
-    path: '/organisations/add',
+    path: '/admin/organisations/add/:id?',
     name: 'Add organisation',
     meta: {
       public: false
     },
     component: () => import('../views/AddOrganisation.vue')
   },
+
   {
-    path: '/404',
-    name: '404',
-    component: () => import('../views/NotFound.vue'),
-    meta: {
-      public: true
-    }
-  },
-  {
-    path: '/register',
+    path: '/admin/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
     meta: {
@@ -55,11 +48,19 @@ const routes = [
     }
   },
   {
-    path: '/login',
+    path: '/admin/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
     meta: {
       disableIfLoggedIn: true,
+      public: true
+    }
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/NotFound.vue'),
+    meta: {
       public: true
     }
   },
@@ -93,7 +94,7 @@ router.beforeEach((to, from, next) => {
             claims
           }) {
             console.log(claims)
-            if (!claims.admin) {
+            if (claims.admin) {
               next()
             } else {
               next({ path: '/' })

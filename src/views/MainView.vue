@@ -51,13 +51,14 @@ export default {
     organisations: []
   }),
   created () {
-    db.collection('organisations')
+    db.collection('organisations-dev')
       .orderBy('category', 'asc')
       .get()
       .then((querySnapshot) => {
         this.isLoading = false
         querySnapshot.forEach((doc) => {
           const organisationData = {
+            id: doc.id,
             name: doc.data().name,
             category: doc.data().category,
             description: doc.data().description,
