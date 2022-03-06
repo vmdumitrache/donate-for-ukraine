@@ -6,7 +6,9 @@ import store from '@/store'
 
 firebase.initializeApp(firebaseConfig)
 
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged((user) => {
+  const { authUser, claims } = user.getCurrentUser.getIdTokenResult()
+  console.log({ authUser, claims })
   store.dispatch('fetchUser', user)
 })
 

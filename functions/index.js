@@ -10,25 +10,37 @@ const sendGridKey = functions.config().sendgrid.key
 
 
 exports.AddUserRole = functions.auth.user().onCreate(async function (authUser) {
+  const customClaims = {
+    admin: false
+  }
 
-  if (authUser.email === 'v.m.dumitrache@gmail.com') {
-    const customClaims = {
-      admin: true
-    };
+  try {
+    var _ = await admin.auth().setCustomUserClaims(authUser.uid, customClaims);
+
+    return db.collection("users").doc(authUser.uid).set({
+      email: authUser.email,
+      customClaims
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+exports.UpdateUserClaims = functions.firestore.document('users/{userId}').onUpdate(async (change, context) => {
+  const userId = context.params.userId
+  const before = change.before.data()
+  const after = change.after.data()
+
+  if (before.customClaims.admin !== after.customClaims.admin) {
     try {
-      var _ = await admin.auth().setCustomUserClaims(authUser.uid, customClaims);
-
-      return db.collection("roles").doc(authUser.uid).set({
-        email: authUser.email,
-        role: customClaims
-      });
-
+      var _ = await admin.auth().setCustomUserClaims(userId, { admin: after.customClaims.admin });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
   }
-});
+})
 
 exports.sendContactEmail = functions.firestore.document('contactMessages/{contactId}').onCreate(async (snap, context) => {
   const { name, email, message } = snap.data()
@@ -55,11 +67,11 @@ exports.sendContactEmail = functions.firestore.document('contactMessages/{contac
   sendGrid.setApiKey(sendGridKey);
 
   sendGrid
-  .send(msg)
-  .then(() => {
-    console.log("Email sent!");
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+    .send(msg)
+    .then(() => {
+      console.log("Email sent!");
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 });

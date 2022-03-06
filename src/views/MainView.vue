@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import DonationItem from '@/components/DonationItem.vue'
+import DonationItem from '@/components/Organisation.vue'
 import db from '@/services/db'
 
 export default {

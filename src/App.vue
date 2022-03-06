@@ -24,10 +24,9 @@
 </template>
 
 <script>
-import AppNavigation from './components/ConstrainedAppNavigation'
+import AppNavigation from './components/AppNavigation'
 import MainFooter from './components/MainFooter.vue'
 import CookieConsentBar from '@/components/CookieConsentBar'
-// import AppNavigation from './components/AppNavigation.vue'
 
 export default {
   name: 'App',

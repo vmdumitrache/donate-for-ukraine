@@ -1,4 +1,5 @@
 <template>
+<v-flex xs12 sm8 offset-sm-2 md6 offset-md3>
   <v-form
     @submit.prevent="submit"
     ref="form"
@@ -27,7 +28,8 @@
       label="Password"
       required
     ></v-text-field>
-
+ </v-form>
+  <v-container class="text-center">
     <v-btn
       :disabled="!valid"
       color="success"
@@ -36,7 +38,14 @@
     >
       Register
     </v-btn>
-  </v-form>
+  </v-container>
+  <v-container class="text-center">
+      <p>Already have an account?</p>
+      <v-btn color="secondary" class="mr-4" to="/admin/login">
+        Sign In
+      </v-btn>
+    </v-container>
+</v-flex>
 </template>
 
 <script>

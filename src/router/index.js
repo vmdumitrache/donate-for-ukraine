@@ -4,11 +4,11 @@ import firebase from '@/services/firebase'
 Vue.use(VueRouter)
 
 const DEFAULT_TITLE = 'Donate For Ukraine'
-const routes = [
+const publicRoutes = [
   {
     path: '/',
     name: 'Where to donate',
-    component: () => import('../views/MainView.vue'),
+    component: () => import('@/views/MainView.vue'),
     meta: {
       public: true
     }
@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/external-resources',
     name: 'External Resources',
-    component: () => import('../views/ResourcesView.vue'),
+    component: () => import('@/views/ResourcesView.vue'),
     meta: {
       public: true
     }
@@ -24,7 +24,7 @@ const routes = [
   {
     path: '/contact-us',
     name: 'Contact Us',
-    component: () => import('../views/ContactView.vue'),
+    component: () => import('@/views/ContactView.vue'),
     meta: {
       public: true
     }
@@ -35,13 +35,13 @@ const routes = [
     meta: {
       public: false
     },
-    component: () => import('../views/AddOrganisation.vue')
+    component: () => import('@/views/admin/organisations/AddOrganisationView.vue')
   },
 
   {
     path: '/admin/register',
     name: 'Register',
-    component: () => import('../views/Register.vue'),
+    component: () => import('@/views/admin/Register.vue'),
     meta: {
       disableIfLoggedIn: true,
       public: true
@@ -50,7 +50,7 @@ const routes = [
   {
     path: '/admin/login',
     name: 'Login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('@/views/admin/LoginView.vue'),
     meta: {
       disableIfLoggedIn: true,
       public: true
@@ -59,7 +59,7 @@ const routes = [
   {
     path: '/404',
     name: '404',
-    component: () => import('../views/NotFound.vue'),
+    component: () => import('@/views/NotFoundView.vue'),
     meta: {
       public: true
     }
@@ -70,6 +70,28 @@ const routes = [
   }
 
 ]
+
+const adminRoutes = [
+  {
+    path: '/admin/users',
+    name: 'ADMIN - Users',
+    meta: {
+      public: true
+    },
+    component: () => import('@/views/admin/users/UsersView.vue')
+  },
+  {
+    path: '/admin/organisations',
+    name: 'ADMIN - Organisations',
+    meta: {
+      public: true
+    },
+    component: () => import('@/views/admin/organisations/OrganisationsView.vue')
+  }
+
+]
+
+const routes = publicRoutes.concat(adminRoutes)
 
 const router = new VueRouter({
   mode: 'history',
