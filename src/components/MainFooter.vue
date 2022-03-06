@@ -21,10 +21,6 @@ export default {
   }),
 
   methods: {
-    refresh () {
-      console.log('would do it')
-      // this.$router.go(this.$router.currentRoute)
-    }
   }
 }
 </script>

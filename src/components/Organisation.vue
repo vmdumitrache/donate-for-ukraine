@@ -1,30 +1,26 @@
 <template>
   <v-col class="ma-0 pa-0">
     <v-card outlined class="mx-auto my-4">
-      <v-card-title style="word-break: normal" class="text-uppercase">
+      <v-card-title style="word-break: normal" class="text-uppercase text-h5">
         {{ organisation.name }}
-        <v-spacer></v-spacer>
       </v-card-title>
 
-      <v-card-subtitle class="text-overline">
+      <v-card-subtitle class="text-subtitle">
         {{ organisation.category }}
       </v-card-subtitle>
-      <v-card-text class="text body-2">
+      <v-divider></v-divider>
+      <v-card-text class="text">
+        <h2 class="mb-2">DESCRIPTION</h2>
         <span v-html="organisation.description"></span>
+        <h2 class="mt-7">FINANCIAL STATEMENTS PUBLIC</h2>
+        <span>{{
+          organisation.financialStatements ? "Yes" : "No / Not Known"
+        }}</span>
+        <h2 class="mt-7 mb-2">ACCEPTED PAYMENT METHODS</h2>
+
         <v-row>
-          <v-col
-            xs="12"
-            class="
-              mx-3
-              px-0
-              py-0
-              my-0
-              pt-15
-              text-caption text-uppercase text-left
-            "
-          >
-            Accepted payment methods
-            <v-container class="ml-0 px-0 pt-0 text-h6">
+          <v-col>
+            <v-container class="ml-0 px-0 pt-0 text-h5 text-truncate">
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <font-awesome-icon
@@ -76,28 +72,28 @@
                 </template>
                 <span>Crypto</span>
               </v-tooltip>
-
             </v-container>
           </v-col>
         </v-row>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-row>
-          <v-col>
-            <v-btn
-              color="primary"
-              :href="organisation.url"
-              target="_blank"
-              text
-              >Read More</v-btn
-            >
-          </v-col>
-          <v-col class="text-right font-italic">
-            <v-btn v-if="user.loggedIn" color="error" :to="'/admin/organisations/add/'+organisation.id" text
-              >Edit</v-btn
-            >
-          </v-col>
+        <v-row class="my-0">
+          <v-btn
+            color="error"
+            :href="organisation.donationsURL"
+            target="_blank"
+            text
+            >Donations Page</v-btn
+          >
+          <v-btn
+            color="primary"
+            :href="organisation.readMoreURL"
+            target="_blank"
+            text
+            >Read More</v-btn
+          >
+          <v-col class="text-right font-italic"> </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -116,7 +112,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'user'
+      getUser: 'getUser',
+      isLoggedIn: 'isLoggedIn'
     })
   }
 }

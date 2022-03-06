@@ -1,13 +1,10 @@
 <template>
   <v-form
-    @submit.prevent="saveOrganisation"
+    @submit.prevent="submitOrganisation"
     ref="form"
     v-model="valid"
-    lazy-validation
+
   >
-    <v-alert v-if="flash.message" class="text-center" text :type="flash.type">
-      {{ flash.message }}
-    </v-alert>
     <v-text-field
       v-model="organisation.name"
       :counter="255"
@@ -16,13 +13,15 @@
       required
     ></v-text-field>
 
-    <v-text-field
+    <v-select
+      :items="categories"
       v-model="organisation.category"
-      :counter="255"
       :rules="stringRules"
       label="Category"
       required
-    ></v-text-field>
+    >
+
+    </v-select>
 
     <v-textarea
       v-model="organisation.description"
@@ -32,12 +31,24 @@
     ></v-textarea>
 
     <v-text-field
-      v-model="organisation.url"
+      v-model="organisation.readMoreURL"
       :counter="255"
       :rules="stringRules"
-      label="URL"
-      required
+      label="Read More URL"
     ></v-text-field>
+
+    <v-text-field
+      v-model="organisation.donationsURL"
+      :counter="255"
+      :rules="stringRules"
+      label="Donations URL"
+    ></v-text-field>
+
+    <v-checkbox
+      v-model="organisation.financialStatements"
+      label="Financial Statements Available"
+      required
+    ></v-checkbox>
 
     <v-checkbox v-model="organisation.paymentMethods.payPal" label="Accepts PayPal" required></v-checkbox>
 
@@ -74,25 +85,35 @@
 
 <script>
 import db from '@/services/db'
+import { mapMutations } from 'vuex'
 export default {
   name: 'new-organisation',
   data () {
     return {
+      categories: [
+        'GENERAL SUPPORT',
+        'MEDICAL',
+        'MILITARY',
+        'CHILDREN',
+        'INDEPENDENT MEDIA',
+        'LGBTQIA',
+        'RELIGIOUS AND ETHNIC MINORITY AID',
+        'VETERANS AND INTERNALLY DISPLACED PEOPLE'
+
+      ],
       organisation: {
-        name: '',
-        category: '',
-        description: '',
-        url: '',
+        name: null,
+        category: null,
+        description: null,
+        readMoreURL: null,
+        donationsURL: null,
+        financialStatements: false,
         paymentMethods: {
           payPal: false,
           creditCard: false,
           bankTransfer: false,
           crypto: false
         }
-      },
-      flash: {
-        message: '',
-        type: ''
       },
       isEditing: false,
       valid: false,
@@ -114,45 +135,39 @@ export default {
         this.addOrganisation()
       }
     },
-    saveOrganisation () {
+    addOrganisation () {
       const newOrganisation = {
         name: this.organisation.name,
         category: this.organisation.category,
         description: this.organisation.description,
-        url: this.organisation.url,
+        readMoreURL: this.organisation.readMoreURL,
+        donationsURL: this.organisation.donationsURL,
+        financialStatements: this.organisation.financialStatements,
         paymentMethods: {
-          payPal: this.organisation.payPal,
-          creditCard: this.organisation.creditCard,
-          bankTransfer: this.organisation.bankTransfer,
-          crypto: this.organisation.crypto
+          payPal: this.organisation.paymentMethods.payPal,
+          creditCard: this.organisation.paymentMethods.creditCard,
+          bankTransfer: this.organisation.paymentMethods.bankTransfer,
+          crypto: this.organisation.paymentMethods.crypto
         }
       }
 
-      db.collection('organisations-dev')
+      db.collection('organisations')
         .add(newOrganisation)
         .then((docRef) => {
-          console.log('Organisation added: ', docRef.id)
-          this.flash = {
-            message: 'Organisation added successfully!',
-            type: 'success'
-          }
+          this.setSnack({ type: 'success', text: 'Organisation added successfully!' })
           this.$refs.form.reset()
+          this.goBack()
         })
-        .catch((error) => {
-          this.flash = {
-            message: 'Organisation could not be added, please try again.',
-            type: 'error'
-          }
-          console.error('Error adding organisation: ', error)
+        .catch(() => {
+          this.setSnack({ type: 'error', text: 'Organisation could not be updated, please try again.' })
         })
     },
 
     getOrganisationById () {
-      db.collection('organisations-dev')
+      db.collection('organisations')
         .doc(this.$route.params.id)
         .get()
         .then((snapshot) => {
-          console.log(snapshot.data())
           if (snapshot.exists) {
             this.organisation = snapshot.data()
             this.isEditing = true
@@ -162,45 +177,41 @@ export default {
 
     updateOrganisation () {
       const organisation = {
-        name: this.organisation.name,
-        category: this.organisation.category,
-        description: this.organisation.description,
-        url: this.organisation.url,
+        name: this.organisation.name || null,
+        category: this.organisation.category || null,
+        description: this.organisation.description || null,
+        readMoreURL: this.organisation.readMoreURL || null,
+        donationsURL: this.organisation.donationsURL || null,
+        financialStatements: this.organisation.financialStatements || false,
         paymentMethods: {
-          payPal: this.organisation.payPal,
-          creditCard: this.organisation.creditCard,
-          bankTransfer: this.organisation.bankTransfer,
-          crypto: this.organisation.crypto
+          payPal: this.organisation.paymentMethods.payPal || false,
+          creditCard: this.organisation.paymentMethods.creditCard || false,
+          bankTransfer: this.organisation.paymentMethods.bankTransfer || false,
+          crypto: this.organisation.paymentMethods.crypto || false
         }
       }
-      db.collection('organisations-dev')
+      db.collection('organisations')
         .doc(this.$route.params.id)
         .update(organisation)
         .then(() => {
-          this.flash = {
-            message: 'Organisation updated successfully!',
-            type: 'success'
-          }
+          this.setSnack({ type: 'success', text: 'Organisation updated successfully!' })
+          this.goBack()
         })
         .catch(() => {
-          this.flash = {
-            message: 'Organisation could not be updated, please try again.',
-            type: 'error'
-          }
+          this.setSnack({ type: 'error', text: 'Organisation could not be updated, please try again.' })
         })
     },
     goBack () {
       this.$router.go(-1)
-    }
+    },
+    ...mapMutations({
+      setSnack: 'SET_SNACK'
+    })
   },
   mounted () {
     if ('id' in this.$route.params) {
       this.getOrganisationById()
       this.editing = true
-      console.log('id')
-    } else {
-      console.log('ups')
-      // this
     }
   }
 }

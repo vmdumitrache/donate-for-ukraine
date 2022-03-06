@@ -6,7 +6,6 @@
     v-model="valid"
 
   >
-  <v-alert class="text-center" text v-if="error" type="error">{{error}}</v-alert>
     <v-text-field
       v-model="name"
       :rules="stringRules"
@@ -32,11 +31,20 @@
   <v-container class="text-center">
     <v-btn
       :disabled="!valid"
-      color="success"
+      color="primary"
       class="mr-4"
       @click="submit"
     >
       Register
+    </v-btn>
+  </v-container>
+  <v-container class="text-center">
+    <v-btn
+      color="success"
+      class="mr-4"
+      @click="signInWithGoogle"
+    >
+      Register with Google
     </v-btn>
   </v-container>
   <v-container class="text-center">
@@ -50,12 +58,11 @@
 
 <script>
 import firebase from '@/services/firebase'
-
+import { mapMutations } from 'vuex'
 export default {
   name: 'RegisterView',
   data () {
     return {
-      error: '',
       valid: false,
       name: '',
       email: '',
@@ -97,9 +104,25 @@ export default {
             this.$router.push({ path: '/login' })
           })
       } catch (error) {
-        this.error = error.message
+        this.setSnack({ type: 'error', text: error.message })
       }
-    }
+    },
+    async signInWithGoogle () {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          this.$router.push({ path: '/' })
+          this.setSnack({ type: 'success', text: 'Successfully logged in' })
+        })
+        .catch((error) => {
+          this.setSnack({ type: 'error', text: error.message })
+        })
+    },
+    ...mapMutations({
+      setSnack: 'SET_SNACK'
+    })
   }
 }
 </script>

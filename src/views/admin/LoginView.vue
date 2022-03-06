@@ -1,9 +1,6 @@
 <template>
   <v-flex xs12 sm8 offset-sm-2 md6 offset-md3>
     <v-form @submit.prevent="submit" ref="form" v-model="valid">
-      <v-alert class="text-center" text v-if="error" type="error">{{
-        error
-      }}</v-alert>
       <v-text-field
         v-model="email"
         :rules="emailRules"
@@ -26,6 +23,11 @@
       </v-btn>
     </v-container>
     <v-container class="text-center">
+      <v-btn color="success" class="mr-4" @click="signInWithGoogle">
+        Login with Google
+      </v-btn>
+    </v-container>
+    <v-container class="text-center">
       <p>Don't have an account?</p>
       <v-btn color="secondary" class="mr-4" to="/admin/register">
         Sign Up
@@ -36,12 +38,11 @@
 
 <script>
 import firebase from '@/services/firebase'
-
+import { mapMutations } from 'vuex'
 export default {
   name: 'RegisterView',
   data () {
     return {
-      error: '',
       valid: false,
       email: '',
       password: '',
@@ -56,34 +57,38 @@ export default {
       ]
     }
   },
-  created () {
-    firebase.auth().onAuthStateChanged((userAuth) => {
-      if (userAuth) {
-        firebase
-          .auth()
-          .currentUser.getIdTokenResult(true)
-          .then((tokenResult) => {
-            console.log(tokenResult)
-          })
-      }
-    })
-  },
   methods: {
     validate () {
       this.$refs.form.validate()
     },
-    submit () {
+    async submit () {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then((data) => {
-          console.log(data)
-          this.$router.replace({ path: '/admin/organisations/add' })
+          this.$router.push({ path: '/' })
+          this.setSnack({ type: 'success', text: 'Successfully logged in' })
         })
-        .catch((err) => {
-          this.error = err.message
+        .catch((error) => {
+          this.setSnack({ type: 'error', text: error.message })
         })
-    }
+    },
+    async signInWithGoogle () {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          this.setSnack({ type: 'success', text: 'Successfully logged in' })
+          this.$router.push({ path: '/' })
+        })
+        .catch((error) => {
+          this.setSnack({ type: 'error', text: error.message })
+        })
+    },
+    ...mapMutations({
+      setSnack: 'SET_SNACK'
+    })
   }
 }
 </script>

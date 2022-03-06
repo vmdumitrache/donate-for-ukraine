@@ -5,15 +5,36 @@ import Vuetify from 'vuetify/lib/framework'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import specific icons */
-import { faUserSecret, faBuildingColumns, faCreditCard, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import {
+  faUserSecret,
+  faBuildingColumns,
+  faCreditCard,
+  faUpRightFromSquare,
+  faPenToSquare,
+  faUserLarge,
+  faUserLargeSlash
+} from '@fortawesome/free-solid-svg-icons'
 
-import { faCcPaypal, faBitcoin } from '@fortawesome/free-brands-svg-icons'
+import {
+  faCcPaypal,
+  faBitcoin
+} from '@fortawesome/free-brands-svg-icons'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* add icons to the library */
-library.add(faUserSecret, faCcPaypal, faBuildingColumns, faBitcoin, faCreditCard, faUpRightFromSquare)
+library.add(
+  faUserSecret,
+  faCcPaypal,
+  faBuildingColumns,
+  faBitcoin,
+  faCreditCard,
+  faUpRightFromSquare,
+  faPenToSquare,
+  faUserLarge,
+  faUserLargeSlash
+)
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)

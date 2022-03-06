@@ -33,25 +33,25 @@
       v-for="(organisation, index) in organisations"
       :key="index"
     >
-      <donation-item :organisation="organisation" :key="index"></donation-item>
+      <organisation-item :organisation="organisation" :key="index"></organisation-item>
     </v-col>
   </div>
 </template>
 
 <script>
-import DonationItem from '@/components/Organisation.vue'
+import OrganisationItem from '@/components/Organisation.vue'
 import db from '@/services/db'
 
 export default {
   components: {
-    DonationItem
+    OrganisationItem
   },
   data: () => ({
     isLoading: true,
     organisations: []
   }),
   created () {
-    db.collection('organisations-dev')
+    db.collection('organisations')
       .orderBy('category', 'asc')
       .get()
       .then((querySnapshot) => {

@@ -38,7 +38,14 @@ exports.UpdateUserClaims = functions.firestore.document('users/{userId}').onUpda
     } catch (error) {
       console.error(error);
     }
+  }
 
+  if (before.active !== after.active) {
+    try {
+      var _ = await admin.auth().updateUser(userId, { disabled: !after.active });
+    } catch (error) {
+      console.error(error);
+    }
   }
 })
 
