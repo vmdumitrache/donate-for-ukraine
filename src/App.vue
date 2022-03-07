@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <app-navigation></app-navigation>
-    <v-main class="grey darken-4">
+    <v-main dark class="grey darken-4">
       <v-container style="max-width: 900px">
         <v-row>
           <v-col>
@@ -18,27 +18,33 @@
       </v-container>
     </v-main>
     <cookie-consent-bar></cookie-consent-bar>
+    <SnackComponent />
     <main-footer></main-footer>
-
   </v-app>
 </template>
 
 <script>
-import AppNavigation from './components/ConstrainedAppNavigation'
+import AppNavigation from './components/AppNavigation'
 import MainFooter from './components/MainFooter.vue'
 import CookieConsentBar from '@/components/CookieConsentBar'
-// import AppNavigation from './components/AppNavigation.vue'
-
+import { mapActions } from 'vuex'
+import SnackComponent from '@/components/SnackComponent'
 export default {
   name: 'App',
   components: {
     AppNavigation,
     MainFooter,
-    CookieConsentBar
+    CookieConsentBar,
+    SnackComponent
   },
-
   data: () => ({
     //
-  })
+  }),
+  methods: {
+    ...mapActions(['authAction'])
+  },
+  created () {
+    this.authAction()
+  }
 }
 </script>

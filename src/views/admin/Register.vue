@@ -1,11 +1,11 @@
 <template>
+<v-flex xs12 sm8 offset-sm-2 md6 offset-md3>
   <v-form
     @submit.prevent="submit"
     ref="form"
     v-model="valid"
 
   >
-  <v-alert class="text-center" text v-if="error" type="error">{{error}}</v-alert>
     <v-text-field
       v-model="name"
       :rules="stringRules"
@@ -27,26 +27,42 @@
       label="Password"
       required
     ></v-text-field>
-
+ </v-form>
+  <v-container class="text-center">
     <v-btn
       :disabled="!valid"
-      color="success"
+      color="primary"
       class="mr-4"
       @click="submit"
     >
       Register
     </v-btn>
-  </v-form>
+  </v-container>
+  <v-container class="text-center">
+    <v-btn
+      color="success"
+      class="mr-4"
+      @click="signInWithGoogle"
+    >
+      Register with Google
+    </v-btn>
+  </v-container>
+  <v-container class="text-center">
+      <p>Already have an account?</p>
+      <v-btn color="secondary" class="mr-4" to="/admin/login">
+        Sign In
+      </v-btn>
+    </v-container>
+</v-flex>
 </template>
 
 <script>
 import firebase from '@/services/firebase'
-
+import { mapMutations } from 'vuex'
 export default {
   name: 'RegisterView',
   data () {
     return {
-      error: '',
       valid: false,
       name: '',
       email: '',
@@ -85,12 +101,29 @@ export default {
           .auth()
           .signOut()
           .then(user => {
-            this.$router.push({ path: '/login' })
+            this.setSnack({ type: 'success', text: 'User account successfully registered.' })
+            this.$router.push({ path: '/' })
           })
       } catch (error) {
-        this.error = error.message
+        this.setSnack({ type: 'error', text: error.message })
       }
-    }
+    },
+    async signInWithGoogle () {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          this.$router.push({ path: '/' })
+          this.setSnack({ type: 'success', text: 'Successfully logged in' })
+        })
+        .catch((error) => {
+          this.setSnack({ type: 'error', text: error.message })
+        })
+    },
+    ...mapMutations({
+      setSnack: 'SET_SNACK'
+    })
   }
 }
 </script>

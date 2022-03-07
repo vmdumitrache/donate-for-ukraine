@@ -1,66 +1,100 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import firebase from '@/services/firebase'
+// import firebase from '@/services/firebase'
+import store from '@/store'
 Vue.use(VueRouter)
 
 const DEFAULT_TITLE = 'Donate For Ukraine'
-const routes = [
+const publicRoutes = [
   {
     path: '/',
     name: 'Where to donate',
-    component: () => import('../views/MainView.vue'),
+    component: () => import('@/views/MainView.vue'),
     meta: {
-      public: true
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
     }
   },
   {
     path: '/external-resources',
     name: 'External Resources',
-    component: () => import('../views/ResourcesView.vue'),
+    component: () => import('@/views/ResourcesView.vue'),
     meta: {
-      public: true
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
     }
   },
   {
     path: '/contact-us',
     name: 'Contact Us',
-    component: () => import('../views/ContactView.vue'),
     meta: {
-      public: true
-    }
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
+    },
+    component: () => import('@/views/ContactView.vue')
   },
   {
-    path: '/organisations/add',
+    path: '/admin/organisations/add',
     name: 'Add organisation',
     meta: {
-      public: false
+      requirements: {
+        loggedIn: true,
+        admin: true
+      }
     },
-    component: () => import('../views/AddOrganisation.vue')
+    component: () => import('@/views/admin/organisations/AddOrganisationView.vue')
+  },
+  {
+    path: '/admin/organisations/edit/:id?',
+    name: 'Edit organisation',
+    meta: {
+      requirements: {
+        loggedIn: true,
+        admin: true
+      }
+    },
+    component: () => import('@/views/admin/organisations/AddOrganisationView.vue')
+  },
+
+  {
+    path: '/admin/register',
+    name: 'Register',
+    meta: {
+      requirements: {
+        loggedIn: false,
+        admin: false,
+        strictAnonymous: true
+      }
+    },
+    component: () => import('@/views/admin/Register.vue')
+  },
+  {
+    path: '/admin/login',
+    name: 'Login',
+    component: () => import('@/views/admin/LoginView.vue'),
+    meta: {
+      requirements: {
+        loggedIn: false,
+        admin: false,
+        strictAnonymous: true
+      }
+    }
   },
   {
     path: '/404',
     name: '404',
-    component: () => import('../views/NotFound.vue'),
+    component: () => import('@/views/NotFoundView.vue'),
     meta: {
-      public: true
-    }
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: () => import('../views/Register.vue'),
-    meta: {
-      disableIfLoggedIn: true,
-      public: true
-    }
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue'),
-    meta: {
-      disableIfLoggedIn: true,
-      public: true
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
     }
   },
   {
@@ -69,6 +103,34 @@ const routes = [
   }
 
 ]
+
+const adminRoutes = [
+  {
+    path: '/admin/users',
+    name: 'ADMIN - Users',
+    meta: {
+      requirements: {
+        loggedIn: true,
+        admin: true
+      }
+    },
+    component: () => import('@/views/admin/users/UsersView.vue')
+  },
+  {
+    path: '/admin/organisations',
+    name: 'ADMIN - Organisations',
+    meta: {
+      requirements: {
+        loggedIn: true,
+        admin: true
+      }
+    },
+    component: () => import('@/views/admin/organisations/OrganisationsView.vue')
+  }
+
+]
+
+const routes = publicRoutes.concat(adminRoutes)
 
 const router = new VueRouter({
   mode: 'history',
@@ -83,33 +145,19 @@ router.afterEach((to, from) => {
 })
 
 router.beforeEach((to, from, next) => {
-  firebase.auth().onAuthStateChanged(userAuth => {
-    if (userAuth) {
-      if (to.meta.disableIfLoggedIn) {
-        next({ path: '/' })
-      } else if (!to.meta.public) {
-        firebase.auth().currentUser.getIdTokenResult()
-          .then(function ({
-            claims
-          }) {
-            console.log(claims)
-            if (!claims.admin) {
-              next()
-            } else {
-              next({ path: '/' })
-            }
-          })
-      } else {
-        next()
-      }
-    } else {
-      if (!to.meta.public) {
-        next({ path: '/' })
-      } else {
-        next()
-      }
-    }
-  })
+  const isLoggedIn = store.state.user.loggedIn
+  const isAdmin = store.state.user.admin
+
+  if (
+    (to.meta.requirements.admin && !isAdmin) ||
+    (to.meta.requirements.loggedIn && !isLoggedIn) ||
+    (to.meta.requirements.strictAnonymous && isLoggedIn)
+  ) {
+    next({ path: '/404' })
+  }
+  if (to !== from) {
+    next()
+  }
 })
 
 export default router
