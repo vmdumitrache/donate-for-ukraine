@@ -8,7 +8,7 @@
           </a>
       </v-card-title>
 
-      <v-card-subtitle class="text-subtitle">
+      <v-card-subtitle class="text-subtitle text-uppercase">
         {{ organisation.category }}
       </v-card-subtitle>
       <v-divider></v-divider>
@@ -74,6 +74,18 @@
                   />
                 </template>
                 <span>Crypto</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <font-awesome-icon
+                    v-if="organisation.paymentMethods.physical"
+                    class="ml-1"
+                    icon="fa-solid fa-hand-holding-medical"
+                    v-bind="attrs"
+                    v-on="on"
+                  />
+                </template>
+                <span>Physical Donations</span>
               </v-tooltip>
             </v-container>
           </v-col>

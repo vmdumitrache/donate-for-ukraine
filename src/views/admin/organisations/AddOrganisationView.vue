@@ -48,24 +48,32 @@
     <v-checkbox
       v-model="organisation.financialStatements"
       label="Financial Statements Available"
-      required
     ></v-checkbox>
 
-    <v-checkbox v-model="organisation.paymentMethods.payPal" label="Accepts PayPal" required></v-checkbox>
+    <v-checkbox
+      v-model="organisation.paymentMethods.payPal"
+      label="Accepts PayPal"
+    ></v-checkbox>
 
     <v-checkbox
       v-model="organisation.paymentMethods.creditCard"
       label="Accepts Credit Card"
-      required
     ></v-checkbox>
 
     <v-checkbox
       v-model="organisation.paymentMethods.bankTransfer"
       label="Accepts Bank Transfer"
-      required
     ></v-checkbox>
 
-    <v-checkbox v-model="organisation.paymentMethods.crypto" label="Accepts Crypto" required></v-checkbox>
+    <v-checkbox
+      v-model="organisation.paymentMethods.crypto"
+      label="Accepts Crypto"
+    ></v-checkbox>
+
+    <v-checkbox
+      v-model="organisation.paymentMethods.physical"
+      label="Accepts Physical Donations"
+    ></v-checkbox>
 
     <v-btn
       :disabled="!valid"
@@ -111,7 +119,8 @@ export default {
           payPal: false,
           creditCard: false,
           bankTransfer: false,
-          crypto: false
+          crypto: false,
+          physical: false
         }
       },
       isEditing: false,
@@ -146,7 +155,8 @@ export default {
           payPal: this.organisation.paymentMethods.payPal,
           creditCard: this.organisation.paymentMethods.creditCard,
           bankTransfer: this.organisation.paymentMethods.bankTransfer,
-          crypto: this.organisation.paymentMethods.crypto
+          crypto: this.organisation.paymentMethods.crypto,
+          physical: this.organisation.paymentMethods.physical
         }
       }
 
@@ -186,7 +196,8 @@ export default {
           payPal: this.organisation.paymentMethods.payPal || false,
           creditCard: this.organisation.paymentMethods.creditCard || false,
           bankTransfer: this.organisation.paymentMethods.bankTransfer || false,
-          crypto: this.organisation.paymentMethods.crypto || false
+          crypto: this.organisation.paymentMethods.crypto || false,
+          physical: this.organisation.paymentMethods.physical || false
         }
       }
       db.collection('organisations')

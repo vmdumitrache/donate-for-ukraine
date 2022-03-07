@@ -146,8 +146,10 @@ export default {
         })
     },
     getUserInitials (string) {
-      const matches = string.match(/\b(\w)/g)
-      return matches.join('')
+      if (string) {
+        const matches = string.match(/\b(\w)/g)
+        return matches.join('')
+      }
     },
     ...mapMutations({
       setSnack: 'SET_SNACK'
