@@ -124,6 +124,7 @@ export default {
             description: doc.data().description,
             readMoreURL: doc.data().readMoreURL,
             donationsURL: doc.data().donationsURL,
+            financialStatements: doc.data().financialStatements,
             paymentMethods: {
               payPal: doc.data().paymentMethods.payPal,
               creditCard: doc.data().paymentMethods.creditCard,
