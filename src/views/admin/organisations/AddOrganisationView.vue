@@ -16,9 +16,10 @@
     <v-select
       :items="categories"
       v-model="organisation.category"
-      :rules="stringRules"
       label="Category"
       required
+      item-text="value"
+      item-value="slug"
     >
 
     </v-select>
@@ -74,7 +75,6 @@
     >{{ this.isEditing ? 'Update' : 'Add' }} Organisation
     </v-btn>
     <v-btn
-      :disabled="!valid"
       color="error"
       class="mr-4"
       @click="goBack"
@@ -91,15 +91,14 @@ export default {
   data () {
     return {
       categories: [
-        'GENERAL SUPPORT',
-        'MEDICAL',
-        'MILITARY',
-        'CHILDREN',
-        'INDEPENDENT MEDIA',
-        'LGBTQIA',
-        'RELIGIOUS AND ETHNIC MINORITY AID',
-        'VETERANS AND INTERNALLY DISPLACED PEOPLE'
-
+        { value: 'General Support', slug: 'general support' },
+        { value: 'Medical', slug: 'medical' },
+        { value: 'Military', slug: 'military' },
+        { value: 'Children', slug: 'children' },
+        { value: 'Independent Media', slug: 'independent media' },
+        { value: 'LGBTQIA', slug: 'lgbtqia' },
+        { value: 'Religious and Ethnic Minority Aid', slug: 'religious and ethnic minority aid' },
+        { value: 'Veterans and Internally Displaced People', slug: 'veterans and internally displaced people' }
       ],
       organisation: {
         name: null,

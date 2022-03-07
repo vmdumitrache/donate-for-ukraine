@@ -29,11 +29,11 @@
         >get in touch with us</a
       >.
     </p>
-    <v-card fixed v-if="isLoading === false">
+    <v-card fixed v-if="isLoading === false && organisations.length > 0">
       <v-toolbar dense flat shaped >
         <v-toolbar-title>FILTERS</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text @click="resetFilters"> Reset Filters </v-btn>
+        <v-btn text color="primary" @click="resetFilters"> Reset Filters </v-btn>
       </v-toolbar>
       <v-card-text>
         <v-select
@@ -41,6 +41,8 @@
           multiple
           v-model="selectedCategories"
           :items="categories"
+          item-text="value"
+          item-value="slug"
           label="Categories"
         ></v-select>
         <v-select
@@ -51,6 +53,13 @@
           item-value="slug"
           label="Payment Methods"
         ></v-select>
+        <v-row class="ma-0 pa-0 text-caption text-uppercase grey--text text--darken-2">
+          <v-spacer></v-spacer>
+          Showing {{filteredOrganisations.length}}
+         {{ filteredOrganisations.length === 1 ? 'organisation' : 'organisations' }}
+         out of {{organisations.length}}
+        </v-row>
+
       </v-card-text>
     </v-card>
     <v-skeleton-loader
@@ -84,15 +93,14 @@ export default {
     selectedCategories: [],
     selectedPaymentMethods: [],
     categories: [
-      'General Support',
-      'GENERAL SUPPORT',
-      'MEDICAL',
-      'MILITARY',
-      'CHILDREN',
-      'INDEPENDENT MEDIA',
-      'LGBTQIA',
-      'RELIGIOUS AND ETHNIC MINORITY AID',
-      'VETERANS AND INTERNALLY DISPLACED PEOPLE'
+      { value: 'General Support', slug: 'general support' },
+      { value: 'Medical', slug: 'medical' },
+      { value: 'Military', slug: 'military' },
+      { value: 'Children', slug: 'children' },
+      { value: 'Independent Media', slug: 'independent media' },
+      { value: 'LGBTQIA', slug: 'lgbtqia' },
+      { value: 'Religious and Ethnic Minority Aid', slug: 'religious and ethnic minority aid' },
+      { value: 'Veterans and Internally Displaced People', slug: 'veterans and internally displaced people' }
     ],
     paymentMethods: [
       { value: 'Pay Pal', slug: 'payPal' },
@@ -130,7 +138,7 @@ export default {
       let returnOrganisations = this.organisations
       if (this.selectedCategories.length > 0) {
         returnOrganisations = returnOrganisations.filter((organisation) => {
-          return this.selectedCategories.includes(organisation.category)
+          return this.selectedCategories.includes(organisation.category.toLowerCase())
         })
       }
 
