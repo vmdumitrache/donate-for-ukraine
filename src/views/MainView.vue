@@ -25,15 +25,47 @@
     <p class="text-justify">
       We are actively working on adding more organisations to our list, as well
       as more resources. If you would like to contribute,
-      <br/><a class="text-decoration-none" href="/contact-us">get in touch with us</a>.
+      <br /><a class="text-decoration-none" href="/contact-us"
+        >get in touch with us</a
+      >.
     </p>
+    <v-card fixed v-if="isLoading === false">
+      <v-toolbar dense flat shaped >
+        <v-toolbar-title>FILTERS</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text @click="resetFilters"> Reset Filters </v-btn>
+      </v-toolbar>
+      <v-card-text>
+        <v-select
+          class="text-break"
+          multiple
+          v-model="selectedCategories"
+          :items="categories"
+          label="Categories"
+        ></v-select>
+        <v-select
+          multiple
+          v-model="selectedPaymentMethods"
+          :items="paymentMethods"
+          item-text="value"
+          item-value="slug"
+          label="Payment Methods"
+        ></v-select>
+      </v-card-text>
+    </v-card>
+    <v-skeleton-loader
+      v-if="isLoading"
+      type="card, actions"
+    ></v-skeleton-loader>
     <v-col
-
       class="px-0"
-      v-for="(organisation, index) in organisations"
-      :key="index"
+      v-for="organisation in filteredOrganisations"
+      :key="organisation.id"
     >
-      <organisation-item :organisation="organisation" :key="index"></organisation-item>
+      <organisation-item
+        :organisation="organisation"
+        :key="organisation.id"
+      ></organisation-item>
     </v-col>
   </div>
 </template>
@@ -48,7 +80,26 @@ export default {
   },
   data: () => ({
     isLoading: true,
-    organisations: []
+    organisations: [],
+    selectedCategories: [],
+    selectedPaymentMethods: [],
+    categories: [
+      'General Support',
+      'GENERAL SUPPORT',
+      'MEDICAL',
+      'MILITARY',
+      'CHILDREN',
+      'INDEPENDENT MEDIA',
+      'LGBTQIA',
+      'RELIGIOUS AND ETHNIC MINORITY AID',
+      'VETERANS AND INTERNALLY DISPLACED PEOPLE'
+    ],
+    paymentMethods: [
+      { value: 'Pay Pal', slug: 'payPal' },
+      { value: 'Credit Card', slug: 'creditCard' },
+      { value: 'Bank Transfer', slug: 'bankTransfer' },
+      { value: 'Crypto', slug: 'crypto' }
+    ]
   }),
   created () {
     db.collection('organisations')
@@ -73,6 +124,31 @@ export default {
           this.organisations.push(organisationData)
         })
       })
+  },
+  computed: {
+    filteredOrganisations () {
+      let returnOrganisations = this.organisations
+      if (this.selectedCategories.length > 0) {
+        returnOrganisations = returnOrganisations.filter((organisation) => {
+          return this.selectedCategories.includes(organisation.category)
+        })
+      }
+
+      if (this.selectedPaymentMethods.length > 0) {
+        returnOrganisations = returnOrganisations.filter((organisation) => {
+          return this.selectedPaymentMethods.some((paymentMethod) => {
+            return organisation.paymentMethods[paymentMethod]
+          })
+        })
+      }
+      return returnOrganisations
+    }
+  },
+  methods: {
+    resetFilters () {
+      this.selectedCategories = []
+      this.selectedPaymentMethods = []
+    }
   }
 }
 </script>

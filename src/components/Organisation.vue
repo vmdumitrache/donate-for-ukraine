@@ -2,7 +2,10 @@
   <v-col class="ma-0 pa-0">
     <v-card outlined class="mx-auto my-4">
       <v-card-title style="word-break: normal" class="text-uppercase text-h5">
-        {{ organisation.name }}
+        <a class="text-decoration-none" :href="organisation.readMoreURL" target="_blank">
+          {{ organisation.name }}
+          <font-awesome-icon icon="fa-solid fa-up-right-from-square" size="xs"/>
+          </a>
       </v-card-title>
 
       <v-card-subtitle class="text-subtitle">
