@@ -101,7 +101,8 @@ export default {
           .auth()
           .signOut()
           .then(user => {
-            this.$router.push({ path: '/login' })
+            this.setSnack({ type: 'success', text: 'User account successfully registered.' })
+            this.$router.push({ path: '/' })
           })
       } catch (error) {
         this.setSnack({ type: 'error', text: error.message })

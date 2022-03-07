@@ -12,7 +12,8 @@ import {
   faUpRightFromSquare,
   faPenToSquare,
   faUserLarge,
-  faUserLargeSlash
+  faUserLargeSlash,
+  faHandHoldingMedical
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -33,7 +34,8 @@ library.add(
   faUpRightFromSquare,
   faPenToSquare,
   faUserLarge,
-  faUserLargeSlash
+  faUserLargeSlash,
+  faHandHoldingMedical
 )
 
 /* add font awesome icon component */

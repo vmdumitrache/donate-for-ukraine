@@ -106,7 +106,8 @@ export default {
       { value: 'Pay Pal', slug: 'payPal' },
       { value: 'Credit Card', slug: 'creditCard' },
       { value: 'Bank Transfer', slug: 'bankTransfer' },
-      { value: 'Crypto', slug: 'crypto' }
+      { value: 'Crypto', slug: 'crypto' },
+      { value: 'Physical Donations', slug: 'physical' }
     ]
   }),
   created () {
@@ -121,12 +122,14 @@ export default {
             name: doc.data().name,
             category: doc.data().category,
             description: doc.data().description,
-            url: doc.data().url,
+            readMoreURL: doc.data().readMoreURL,
+            donationsURL: doc.data().donationsURL,
             paymentMethods: {
               payPal: doc.data().paymentMethods.payPal,
               creditCard: doc.data().paymentMethods.creditCard,
               bankTransfer: doc.data().paymentMethods.bankTransfer,
-              crypto: doc.data().paymentMethods.crypto
+              crypto: doc.data().paymentMethods.crypto,
+              physical: doc.data().paymentMethods.physical
             }
           }
           this.organisations.push(organisationData)
