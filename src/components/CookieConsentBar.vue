@@ -1,14 +1,7 @@
 <template>
-  <div class="text-center">
-    <v-bottom-sheet
-      v-model="showBar"
-      overlay-opacity="0.3"
-    >
-      <v-sheet
-        class="text-center"
-        height="200px"
-        color="grey darken-3"
-      >
+  <v-container class="text-center py-0">
+    <v-bottom-sheet v-model="showBar" overlay-opacity="0.3">
+      <v-sheet class="text-center" height="auto" color="grey darken-3">
         <v-btn
           class="mt-6 mx-3"
           text
@@ -27,13 +20,19 @@
         >
           Reject Additional Cookies
         </v-btn>
-        <div class="my-3">
+        <v-divider class="mt-5"></v-divider>
+        <v-container class="py-3">
           We use some essential cookies to make this website work.
-          <br>We’d like to set additional cookies to understand how you use this website.
-        </div>
+          <br />We’d like to set additional cookies to understand how you use
+          this website.
+          <span class="text-caption text-right">
+            <br />You can read more about how we use cookies
+            <a href="/legal/cookie-policy">here</a>.
+          </span>
+        </v-container>
       </v-sheet>
     </v-bottom-sheet>
-  </div>
+  </v-container>
 </template>
 
 <script>

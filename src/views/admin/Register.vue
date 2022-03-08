@@ -1,59 +1,46 @@
 <template>
-<v-flex xs12 sm8 offset-sm-2 md6 offset-md3>
-  <v-form
-    @submit.prevent="submit"
-    ref="form"
-    v-model="valid"
+  <v-flex xs12 sm8 offset-sm-2 md6 offset-md3>
+    <v-form @submit.prevent="submit" ref="form" v-model="valid">
+      <v-text-field
+        v-model="name"
+        :rules="stringRules"
+        label="Name"
+        required
+      ></v-text-field>
 
-  >
-    <v-text-field
-      v-model="name"
-      :rules="stringRules"
-      label="Name"
-      required
-    ></v-text-field>
+      <v-text-field
+        v-model="email"
+        :rules="emailRules"
+        label="Email"
+        required
+      ></v-text-field>
 
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="Email"
-      required
-    ></v-text-field>
-
-    <v-text-field
-      type="password"
-      v-model="password"
-      :rules="passwordRules"
-      label="Password"
-      required
-    ></v-text-field>
- </v-form>
-  <v-container class="text-center">
-    <v-btn
-      :disabled="!valid"
-      color="primary"
-      class="mr-4"
-      @click="submit"
-    >
-      Register
-    </v-btn>
-  </v-container>
-  <v-container class="text-center">
-    <v-btn
-      color="success"
-      class="mr-4"
-      @click="signInWithGoogle"
-    >
-      Register with Google
-    </v-btn>
-  </v-container>
-  <v-container class="text-center">
-      <p>Already have an account?</p>
-      <v-btn color="secondary" class="mr-4" to="/admin/login">
-        Sign In
+      <v-text-field
+        type="password"
+        v-model="password"
+        :rules="passwordRules"
+        label="Password"
+        required
+      ></v-text-field>
+    </v-form>
+    <v-container class="text-center">
+      <v-btn :disabled="!valid" color="primary" class="mr-4" @click="submit">
+        Register
       </v-btn>
     </v-container>
-</v-flex>
+    <v-container class="text-center">
+      <v-btn color="success" class="mr-4" @click="signInWithGoogle">
+        Register with Google
+      </v-btn>
+    </v-container>
+    <v-container class="text-center">
+      <p>Already have an account?</p>
+      <v-btn color="secondary" class="mr-4" to="/admin/login"> Sign In </v-btn>
+    </v-container>
+    <v-container class="text-center">
+      <p>By registering, you agree to our <a href="/legal/privacy-policy" target="_blank">Privacy Policy</a></p>
+    </v-container>
+  </v-flex>
 </template>
 
 <script>
@@ -68,16 +55,18 @@ export default {
       email: '',
       password: '',
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
+        (v) => !!v || 'E-mail is required',
+        (v) => /.+@.+/.test(v) || 'E-mail must be valid'
       ],
       stringRules: [
-        v => !!v || 'Data is required',
-        v => (v && v.length >= 3) || 'String must be at least than 3 characters'
+        (v) => !!v || 'Data is required',
+        (v) =>
+          (v && v.length >= 3) || 'String must be at least than 3 characters'
       ],
       passwordRules: [
-        v => !!v || 'Data is required',
-        v => (v && v.length >= 8) || 'String must be at least than 8 characters'
+        (v) => !!v || 'Data is required',
+        (v) =>
+          (v && v.length >= 8) || 'String must be at least than 8 characters'
       ]
     }
   },
@@ -100,8 +89,11 @@ export default {
         firebase
           .auth()
           .signOut()
-          .then(user => {
-            this.setSnack({ type: 'success', text: 'User account successfully registered.' })
+          .then((user) => {
+            this.setSnack({
+              type: 'success',
+              text: 'User account successfully registered.'
+            })
             this.$router.push({ path: '/' })
           })
       } catch (error) {
