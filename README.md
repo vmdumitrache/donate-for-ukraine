@@ -22,3 +22,12 @@ npm run build
 ```
 npm run lint
 ```
+
+## Contributing
+If you would like to contribute to this project, please read the [CONTRIBUTING](CONTRIBUTING.md) guide for more details.
+
+## Code of Conduct
+You can find our Code of Conduct [here](CODE_OF_CONDUCT.md)
+
+## License
+This project is licensed under MIT. You can read more about it [here](LICENSE.md)
