@@ -1,12 +1,31 @@
+
 <template>
-  <v-footer padless dark>
-    <v-card flat width="100%" class="text-center">
-      <!-- <v-divider></v-divider> -->
-      <v-card-text class="white--text">
+  <v-footer
+    padless
+    dark
+  >
+    <v-row
+      justify="center"
+      no-gutters
+    >
+      <v-btn
+        v-for="(link, id) in links"
+        :key="id"
+        color="white"
+        text
+        class="my-2"
+        :href="link.url"
+        target="_blank"
+      >
+        {{ link.name }}
+      </v-btn>
+      <v-col
+        class="py-4 text-center white--text"
+        cols="12"
+      >
         {{ new Date().getFullYear() }} — <strong>donateforukraine.org</strong>
-      </v-card-text>
-    </v-card>
-    <!-- <cookie-consent-bar></cookie-consent-bar> -->
+      </v-col>
+    </v-row>
   </v-footer>
 </template>
 
@@ -16,11 +35,21 @@ export default {
   components: {
   },
   data: () => ({
-    links: ['Contribute', 'Contact Us']
+    links: [
+      {
+        name: 'Privacy Policy',
+        url: 'legal/privacy-policy'
+      },
+      {
+        name: 'Terms and Conditions',
+        url: 'legal/terms-and-conditions'
+      },
+      {
+        name: 'Cookie Policy',
+        url: 'legal/cookie-policy'
+      }
+    ]
 
-  }),
-
-  methods: {
-  }
+  })
 }
 </script>

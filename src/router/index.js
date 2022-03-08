@@ -29,6 +29,39 @@ const publicRoutes = [
     }
   },
   {
+    path: '/legal/terms-and-conditions',
+    name: 'Terms and Conditions',
+    meta: {
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
+    },
+    component: () => import('@/views/legal/TermsAndConditions.vue')
+  },
+  {
+    path: '/legal/privacy-policy',
+    name: 'Privacy Policy',
+    meta: {
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
+    },
+    component: () => import('@/views/legal/PrivacyPolicy.vue')
+  },
+  {
+    path: '/legal/cookie-policy',
+    name: 'Cookie Policy',
+    meta: {
+      requirements: {
+        loggedIn: false,
+        admin: false
+      }
+    },
+    component: () => import('@/views/legal/CookiePolicy.vue')
+  },
+  {
     path: '/contact-us',
     name: 'Contact Us',
     meta: {
